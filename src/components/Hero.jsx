@@ -1,6 +1,7 @@
-import React, { useRef, useEffect } from "react"; // Explicitly import useRef and useEffect
+import React, { useRef, useEffect } from "react"; 
 import { motion, useScroll, useTransform } from "framer-motion";
 
+// Holiday Snow Overlay Component
 const HolidayOverlay = ({ type, opacity }) => {
   const canvasRef = useRef(null);
 
@@ -9,8 +10,14 @@ const HolidayOverlay = ({ type, opacity }) => {
     const ctx = canvas.getContext("2d");
     let animationFrameId;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    // Handle canvas resizing for responsiveness
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
 
     const particles = [];
     const particleCount = type === "snow" ? 200 : 50; 
@@ -34,8 +41,7 @@ const HolidayOverlay = ({ type, opacity }) => {
         this.y += this.speedY;
         this.x += this.speedX;
         if (type === "snow" && this.y > canvas.height) {
-          this.y = -10;
-          this.x = Math.random() * canvas.width;
+          this.reset();
         }
       }
 
@@ -64,7 +70,11 @@ const HolidayOverlay = ({ type, opacity }) => {
     };
 
     animate();
-    return () => cancelAnimationFrame(animationFrameId);
+    
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', handleResize);
+    };
   }, [type]);
 
   return (
@@ -77,14 +87,15 @@ const HolidayOverlay = ({ type, opacity }) => {
 };
 
 const Hero = () => {
-  const containerRef = useRef(null); // This was throwing the error because of missing import
+  const containerRef = useRef(null); 
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  const videoScale = useTransform(scrollYProgress, [0, 0.8], [1, 3.5]);
+  // Dynamic video zoom scaling
+  const videoScale = useTransform(scrollYProgress, [0, 0.8], [1, 2.5]);
   const effectOpacity = useTransform(scrollYProgress, [0.4, 0.8], [0, 0.8]);
   const morphOpacity = useTransform(scrollYProgress, [0.8, 1], [0, 1]);
 
@@ -101,6 +112,7 @@ const Hero = () => {
           style={{ scale: videoScale }}
           className="h-full w-full object-cover"
         >
+          {/* Ensure your video is moved to /public/images/ */}
           <source src="/images/earth_night.webm" type="video/webm" />
         </motion.video>
 
@@ -112,16 +124,18 @@ const Hero = () => {
         />
       </div>
 
-      <div className="relative z-10 h-screen flex flex-col items-center justify-center text-center px-6">
-        <h1 className="text-white text-8xl md:text-[12rem] font-black tracking-tighter">
+      <div className="relative z-10 h-screen flex flex-col items-center justify-center text-center px-4 sm:px-6">
+        {/* Responsive Typography: Smaller on mobile, large on desktop */}
+        <h1 className="text-white text-5xl sm:text-7xl md:text-9xl lg:text-[12rem] font-black tracking-tighter leading-none">
           SYNAPSE
         </h1>
-        {/* Updated accent color to Champagne Gold variable */}
+        
+        {/* Responsive Tagline: Adjusted tracking for mobile readability */}
         <p 
           style={{ color: "var(--synapse-accent)" }} 
-          className="font-bold tracking-[1em] uppercase text-[9px] mt-10"
+          className="font-bold tracking-[0.3em] sm:tracking-[0.6em] md:tracking-[1em] uppercase text-[8px] sm:text-[10px] md:text-xs mt-6 md:mt-10 max-w-[90vw] sm:max-w-none"
         >
-          The Socio-Culural and Linguistic Society of IITM BS
+          The Socio-Cultural and Linguistic Society of IITM BS
         </p>
       </div>
       
