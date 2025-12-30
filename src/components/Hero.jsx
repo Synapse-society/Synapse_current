@@ -101,7 +101,7 @@ const Hero = () => {
           style={{ scale: videoScale }}
           className="h-full w-full object-cover"
         >
-          <source src="./images/earth_night.webm" type="video/webm" />
+          <source src="/images/earth_night.webm" type="video/webm" />
         </motion.video>
 
         <HolidayOverlay type="snow" opacity={effectOpacity} />
