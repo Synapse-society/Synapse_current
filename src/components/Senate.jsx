@@ -45,9 +45,9 @@ const Senate = () => {
     { id: 12, name: "Rishi Ranjan Borah", role: "Volunteer Content Team", img: "/images/Rishi.jpeg", email: "25F2000964@ds.study.iitm.ac.in", tier: "general" },
     
     { id: 13, name: "Ayush Khade", role: "Ex - Secretary", img: "/images/Ayush.jpg", email: "24f3100265@es.study.iitm.ac.in", tier: "founding" },
-    { id: 14, name: "Samriddhi Kashyap", role: "Web-Admin & Ex-Sec", img: "/images/samriddhi.jpg", email: "23f1001623@ds.study.iitm.ac.in", tier: "founding" },
-    { id: 15, name: "Vighnesh Mishra", role: "Founder and Ex-General Secretary", img: "/images/vignesh.jpg", email: "22f3001240@ds.study.iitm.ac.in", tier: "founding" },
-    { id: 16, name: "Krishnan Lakshmi Narayan", role: "Founder and Ex-Web-Admin", img: "/images/keshava.jpg", email: "22f3002565@ds.study.iitm.ac.in", tier: "founding" },
+    { id: 14, name: "Samriddhi Kashyap", role: "Web-Admin & Ex-Secretary", img: "/images/samriddhi.jpg", email: "23f1001623@ds.study.iitm.ac.in", tier: "founding" },
+    { id: 15, name: "Vighnesh Mishra", role: "Ex-General Secretary", img: "/images/vignesh.jpg", email: "22f3001240@ds.study.iitm.ac.in", tier: "founding" },
+    { id: 16, name: "Krishnan Lakshmi Narayan", role: "Ex-Web-Admin", img: "/images/keshava.jpg", email: "22f3002565@ds.study.iitm.ac.in", tier: "founding" },
   ];
 
   const topTier = members.filter(m => m.tier === "top");
