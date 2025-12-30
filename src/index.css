@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+:root {
+  --synapse-bg: #030a1a;
+  /* Updated to a Deep Champagne Gold for secondary accents */
+  --synapse-accent: #b08d44; 
+}
+
+body {
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+  background-color: #000; /* Solid base for the video overlay */
+}
+
+/* --- GLITTER ANIMATION (Updated to Gold) --- */
+@keyframes border-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.glitter-btn-container {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  padding: 2px;
+  border-radius: 9999px;
+}
+
+.glitter-border {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  /* Replaced emerald with Champagne Gold and White for a sparkle effect */
+  background: conic-gradient(transparent, #E2C17D, #ffffff, #b08d44, transparent 30%);
+  animation: border-rotate 4s linear infinite;
+}
+
+/* --- LIQUID GLASS BLUR --- */
+.backdrop-blur-glass {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+@layer utilities {
+  /* Renamed and recolored from Emerald to Gold */
+  .text-neon-gold {
+    text-shadow: 0 0 5px rgba(226, 193, 125, 0.8), 0 0 10px rgba(184, 134, 11, 0.5);
+  }
+  .text-neon-white {
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* --- CELEBRATORY SOFT GLOW (Recolored to Gold) --- */
+@keyframes glow-soft {
+  0%, 100% {
+    /* Changed from emerald-green RGBA to gold-toned RGBA */
+    text-shadow: 0 0 8px rgba(226, 193, 125, 0.2);
+    opacity: 0.8;
+  }
+  50% {
+    text-shadow: 0 0 15px rgba(226, 193, 125, 0.5);
+    opacity: 1;
+  }
+}
+
+.animate-glow-soft {
+  animation: glow-soft 4s ease-in-out infinite;
+}
+
+/* --- STARRY NIGHT FALLBACK (Immediate load for slow internet) --- */
+.starry-night-fallback {
+  background: radial-gradient(ellipse at bottom, #020a1a 0%, #000 100%);
+  background-image: 
+    radial-gradient(white, rgba(255, 255, 255, 0.2) 2px, transparent 40px),
+    radial-gradient(white, rgba(255, 255, 255, 0.15) 1px, transparent 30px),
+    radial-gradient(white, rgba(255, 255, 255, 0.1) 2px, transparent 40px);
+  background-size: 550px 550px, 350px 350px, 250px 250px;
+  background-position: 0 0, 40px 60px, 130px 270px;
+}
+
+/* --- GLITCH TEXT (Retuned for Elegant Theme) --- */
+.glitch-text {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: "SYNAPSE";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: transparent;
+  display: none;
+}
+
+.glitch-text:hover::before {
+  display: block;
+  left: 2px;
+  /* Gold-to-White glitch instead of Magenta */
+  text-shadow: -2px 0 #E2C17D;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(31px, 9999px, 94px, 0); }
+  20% { clip: rect(62px, 9999px, 42px, 0); }
+  100% { clip: rect(15px, 9999px, 85px, 0); }
+}
