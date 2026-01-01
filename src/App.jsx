@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Departments from "./components/Departments";
+import Events from "./components/Events";
 import Articles from "./components/Articles";
 import Senate from "./components/Senate";
 
@@ -58,6 +59,7 @@ function App() {
               {/* Ensure these sections are set to bg-transparent */}
               <section id="about"><About /></section>
               <section id="departments"><Departments /></section>
+              <section id="events"><Events /></section>
               <section id="articles"><Articles /></section>
               <section id="senate"><Senate /></section>
             </>
