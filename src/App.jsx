@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Lenis from "lenis";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 
 // Components
 import Navbar from "./components/Navbar";
@@ -16,16 +16,7 @@ import Senate from "./components/Senate";
 import "./index.css";
 
 function App() {
-  const { scrollYProgress } = useScroll();
-
-  // Morphing from Black to Deep Space Navy
-  const bgColor = useTransform(
-    scrollYProgress,
-    [0, 0.5, 0.8], 
-    ["#000000", "#020617", "#020a1a"] 
-  );
-
-  // 3. Smooth Scroll Initialization (Lenis)
+  // Smooth Scroll Initialization (Lenis) - Essential for high-end parallax
   useEffect(() => {
     const lenis = new Lenis({ 
       duration: 1.5, 
@@ -43,25 +34,37 @@ function App() {
 
   return (
     <Router>
-      {/* 4. Global Wrapper with Dynamic Background Color */}
+      {/* Global Wrapper: 
+        1. bg-transparent ensures the Hero video is visible everywhere.
+        2. relative positioning keeps sections in proper stacking order.
+      */}
       <motion.main 
-        style={{ backgroundColor: bgColor }} 
-        className="text-white selection:bg-[#E2C17D]/30 min-h-screen relative overflow-x-hidden"
+        className="bg-transparent text-white selection:bg-[#E2C17D]/30 min-h-screen relative overflow-x-hidden"
       >
         <Navbar />
         
         <Routes>
           <Route path="/" element={
             <>
-              {/* The Hero handles the video zoom and slow-motion snow */}
+              {/* Hero: Contains the fixed video and the initial zoom interaction.
+              */}
               <Hero />
               
-              {/* Ensure these sections are set to bg-transparent */}
-              <section id="about"><About /></section>
-              <section id="departments"><Departments /></section>
-              <section id="events"><Events /></section>
-              <section id="articles"><Articles /></section>
-              <section id="senate"><Senate /></section>
+              {/* Floating Sections: 
+                All these components MUST have 'bg-transparent' or 'bg-opacity-0' 
+                applied within their internal code to keep the video visible.
+              */}
+              <div className="relative z-10">
+                <section id="about"><About /></section>
+                <section id="departments"><Departments /></section>
+                <section id="events"><Events /></section>
+                <section id="articles"><Articles /></section>
+                
+                {/* Senate: Reaches the bottom with snow heaps and sparkles 
+                  appearing directly over the planet's surface.
+                */}
+                <section id="senate"><Senate /></section>
+              </div>
             </>
           } />
         </Routes>

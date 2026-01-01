@@ -28,6 +28,7 @@ const About = () => {
 
   const premiumEase = [0.6, 0.01, 0.05, 0.95];
 
+  // --- KINETIC TYPOGRAPHY COMPONENT ---
   const AlternatingChar = ({ char, index, isAccent }) => {
     const isEven = index % 2 === 0;
     const targetY = isEven ? "-100%" : "100%";
@@ -41,14 +42,14 @@ const About = () => {
           transition={{ duration: 0.9, ease: premiumEase }}
           className="block"
         >
-          {char}
+          {char === " " ? "\u00A0" : char}
         </motion.span>
         <motion.span
           variants={{ initial: { y: cloneInitialY }, animate: { y: "0%" } }}
           transition={{ duration: 0.9, ease: premiumEase }}
           className="absolute inset-0 block"
         >
-          {char}
+          {char === " " ? "\u00A0" : char}
         </motion.span>
       </span>
     );
@@ -59,17 +60,19 @@ const About = () => {
 
     const scrollWidth = scrollTrackRef.current.offsetWidth;
 
+    // --- SEAMLESS PINNING LOGIC ---
+    // Start at -20% viewport to overlap with the Hero video zoom
     gsap.fromTo(scrollTrackRef.current, 
-      { x: "60vw" }, 
+      { x: "100vw" }, 
       {
         x: -scrollWidth, 
         ease: "none",
         scrollTrigger: {
           trigger: containerRef.current,
           pin: true,
-          scrub: 1.5,
-          start: "top top",
-          end: () => `+=${scrollTrackRef.current.offsetWidth}`,
+          scrub: 1,
+          start: "top 20%", // Triggers early while Hero is still visible
+          end: () => `+=${scrollWidth}`,
           invalidateOnRefresh: true,
         },
       }
@@ -77,19 +80,23 @@ const About = () => {
   }, [isDesktop]);
 
   return (
-    <section ref={containerRef} id="about" className={`relative bg-transparent overflow-hidden ${isDesktop ? 'h-screen' : 'py-20'}`}>
+    <section 
+      ref={containerRef} 
+      id="about" 
+      // Negative margin pulls the transparent container UP into the Hero section
+      className={`relative z-20 bg-transparent overflow-hidden ${isDesktop ? 'h-screen -mt-[80vh]' : 'py-20'}`}
+    >
       <div className={`flex h-full items-center ${isDesktop ? 'flex-row-reverse pr-20' : 'flex-col px-6'}`}>
         
-        {/* --- RIGHT SIDE: STATIC HEADING & SUBHEADING --- */}
-        {/* Added a subtle radial gradient and drop-shadow for high-end readability */}
+        {/* --- STATIC HEADING --- */}
         <div className={`z-50 ${isDesktop ? 'w-[40%] pl-10' : 'w-full text-center mb-16'}`}>
           <div className="relative p-6 rounded-[2rem]">
-            {/* Soft Glow Background behind text to separate it from the gliding cards */}
-            <div className="absolute inset-0 bg-[#020a1a]/40 blur-3xl -z-10 rounded-full" />
+            {/* Deep glow behind text to darken the Earth video for readability */}
+            <div className="absolute inset-0 bg-[#020a1a]/70 blur-[120px] -z-10 rounded-full" />
             
             <motion.h1
               initial="initial" whileInView="animate" viewport={{ once: true }} transition={{ staggerChildren: 0.03 }}
-              className="text-6xl md:text-8xl font-black tracking-tighter text-white flex flex-wrap justify-end gap-x-3 mb-6 drop-shadow-[0_0_15px_rgba(0,0,0,0.6)]"
+              className="text-6xl md:text-8xl font-black tracking-tighter text-white flex flex-wrap justify-end gap-x-3 mb-6"
             >
               {["Our", "Goals"].map((word, wordIdx) => (
                 <span key={wordIdx} className="flex flex-nowrap">
@@ -102,7 +109,7 @@ const About = () => {
 
             <motion.p 
               initial="initial" whileInView="animate" viewport={{ once: true }} transition={{ staggerChildren: 0.005, delayChildren: 0.5 }}
-              className="text-white/60 text-lg md:text-xl leading-relaxed font-medium flex flex-wrap justify-end text-right drop-shadow-[0_0_10px_rgba(0,0,0,0.5)]"
+              className="text-white/80 text-lg md:text-xl leading-relaxed font-medium flex flex-wrap justify-end text-right"
             >
               {"Synapse Society has a diverse range of goals to enrich members.".split(" ").map((word, wordIdx) => (
                 <span key={wordIdx} className="flex flex-nowrap ml-2">
@@ -115,7 +122,7 @@ const About = () => {
           </div>
         </div>
 
-        {/* --- LEFT GLIDING TRACK --- */}
+        {/* --- GLIDING TRACK --- */}
         <div 
           ref={scrollTrackRef} 
           className={`flex items-center ${isDesktop ? 'flex-nowrap' : 'flex-col w-full gap-10'}`}
@@ -123,21 +130,22 @@ const About = () => {
           {goals.map((goal, index) => (
             <div
               key={index}
-              className={`flex-shrink-0 relative p-10 md:p-12 rounded-[4rem] bg-[#030a1a]/80 border border-white/10 backdrop-blur-3xl shadow-2xl flex flex-col group will-change-transform
-                ${isDesktop ? 'w-[450px] h-[500px] -mr-8' : 'w-full h-auto'} 
-              `}
+              className={`flex-shrink-0 relative p-10 md:p-12 rounded-[3.5rem] bg-[#030a1a]/95 border border-white/20 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] flex flex-col group will-change-transform
+                ${isDesktop ? 'w-[450px] h-[520px] -mr-6 hover:-translate-y-4' : 'w-full h-auto'} 
+              `} // Reduced overlap from -mr-16 to -mr-6
               style={{ 
-                // Overlap: Reduced from -mr-20 to -mr-8 for better visibility
                 zIndex: goals.length - index,
                 transform: isDesktop ? `rotate(${goal.tilt}deg) translateY(${goal.offset}px)` : 'none',
-                transformZ: 0 
+                transition: 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)'
               }}
             >
+              {/* Gold Accent Line */}
               <div className="w-12 h-1 mb-10 rounded-full" style={{ backgroundColor: "var(--synapse-accent)" }} />
+              
               <h5 className="font-black text-2xl md:text-4xl mb-6 leading-tight uppercase tracking-tight" style={{ color: "var(--synapse-accent)" }}>
                 {goal.title}
               </h5>
-              <p className="text-white/40 leading-relaxed text-lg italic group-hover:text-white/70 transition-colors duration-500">
+              <p className="text-white/50 leading-relaxed text-lg italic group-hover:text-white transition-colors duration-500">
                 "{goal.desc}"
               </p>
             </div>

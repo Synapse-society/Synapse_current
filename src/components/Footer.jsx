@@ -152,7 +152,7 @@ const Footer = () => {
             © {currentYear} Synapse Society IITM BS.
           </p>
           <div className="flex items-center gap-4 text-[10px] font-bold tracking-widest uppercase">
-            <span className="text-white/70">Made with ❣️ by</span>
+            <span className="text-white/70">Crafted by</span>
             <a
               href="http://github.com/Felicitatem"
               target="_blank"
